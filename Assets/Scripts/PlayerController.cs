@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Variables")]
@@ -20,6 +21,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("GameObjects")]
     public GameObject playerProjectilePrefab;
+    public GameObject projectileSpawner;
+    public GameObject levelControl;
+  
+    [Header("Bools")]
+    public bool gameOver = false;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI deathTxt;
+    public Button Restart;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,20 +40,20 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //getting the better rotation controls with controller and keyboard
-        if (Input.GetButton("Clockwise"))
+        if (Input.GetButton("Clockwise") || Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.up * -1 * turnSpeed * Time.deltaTime);
         }
 
-        if (Input.GetButton("CounterClockwise"))
+        if (Input.GetButton("CounterClockwise") || Input.GetKey(KeyCode.D))
         {
             transform.Rotate(Vector3.down * -1 * turnSpeed * Time.deltaTime);
         }
 
         //shooting 
-        if(Input.GetButtonDown("Shoot"))
+        if(Input.GetButtonDown("Shoot") || Input.GetMouseButtonDown(0))
         {
-            Instantiate(playerProjectilePrefab);
+            Instantiate(playerProjectilePrefab, projectileSpawner.transform.position, projectileSpawner.transform.rotation);
         }
     }
     private void FixedUpdate()
@@ -54,5 +64,23 @@ public class PlayerController : MonoBehaviour
 
         
        
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+      
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            gameOver = true;
+            rb.constraints = RigidbodyConstraints.FreezePositionX;
+            rb.constraints = RigidbodyConstraints.FreezePositionZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            levelControl.gameObject.SetActive(true);
+            Restart.gameObject.SetActive(true);
+            deathTxt.gameObject.SetActive(true);
+        }
     }
 }
