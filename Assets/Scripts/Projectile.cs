@@ -44,6 +44,7 @@ public class Projectile : MonoBehaviour
         if (isActive == true )
         {
             Destroy(enemy);
+            Destroy(gameObject);
             isActive = false;
         }
     }

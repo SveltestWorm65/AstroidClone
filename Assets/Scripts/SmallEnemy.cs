@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class SmallEnemy : MonoBehaviour
 {
-    [Header("Bools")]
-   
-
     [Header("Floats")]
     public float speed;
 
@@ -18,7 +15,6 @@ public class Enemy : MonoBehaviour
 
     [Header("GameObjects")]
     public GameObject player;
-    public GameObject enemyBabies;
 
     [Header("Scripts")]
     public PlayerController playerController;
@@ -30,50 +26,27 @@ public class Enemy : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         player = GameObject.Find("Player");
-
-        //getting the enemie's components
         enemyCollider = GetComponent<BoxCollider>();
         enemyRb = GetComponent<Rigidbody>();
-       
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //finding the player
         Vector3 lookDirection = (player.transform.position - transform.position).normalized;
 
         enemyRb.AddForce(lookDirection * speed);
-        enemyRb.AddTorque(lookDirection * speed);
 
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //kill the enemy and spawn babies
-        if(other.gameObject.CompareTag("Projectile"))
+        if (other.gameObject.CompareTag("Projectile"))
         {
             Destroy(gameObject);
-            SpawnBabies();
+          
         }
     }
-
-    IEnumerator SpawnBabies()
-    {
-        yield return new WaitForSeconds(0);
-        Instantiate(enemyBabies, transform.position, transform.rotation);
-        Instantiate(enemyBabies, transform.position, transform.rotation);
-        yield return new WaitForSeconds(0);
-    }
-
-
-
-
-
-
-
-
-
-
 }

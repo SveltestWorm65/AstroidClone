@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3300629169032229503}
   m_Layer: 0
   m_Name: playerProjectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   destroyDelay: 0.75
   isActive: 1
   player: {fileID: 0}
-  astroid: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!54 &6618374135189070980
 Rigidbody:
   m_ObjectHideFlags: 0
