@@ -14,12 +14,6 @@ public class SpawnManager : MonoBehaviour
     [Header("Prefabs")]
     public GameObject enemyPrefab;
 
-    [Header("SpawnPoints")]
-    public GameObject Spawner1;
-    public GameObject Spawner2;
-    public GameObject Spawner3;
-    public GameObject Spawner4;
-
     [Header("Ints")]
     public int enemyCount;
     public int waveNumber = 1;
@@ -28,6 +22,7 @@ public class SpawnManager : MonoBehaviour
     public PlayerController playerController;
     void Start()
     {
+        
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         SpawnEnemyWave(waveNumber);
 
@@ -37,12 +32,14 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         enemyCount = FindObjectsOfType<Enemy>().Length;
+       
         if (enemyCount == 0)
         {
             waveNumber++;
             SpawnEnemyWave(waveNumber);
 
         }
+       
     }
 
     void SpawnEnemyWave(int enemiesToSpawn)

@@ -15,17 +15,23 @@ public class PlayerController : MonoBehaviour
 
     [Header("Components")]
     public Rigidbody rb;
+    public ParticleSystem smoke;
 
     [Header("Speed")]
     public float thrustForce;
+    public float boostCharge;
+
 
     [Header("GameObjects")]
     public GameObject playerProjectilePrefab;
     public GameObject projectileSpawner;
     public GameObject levelControl;
+    
   
     [Header("Bools")]
     public bool gameOver = false;
+    public bool isBoosting = false;
+    public bool boostOnCoolDown = false;
 
     [Header("UI Elements")]
     public TextMeshProUGUI deathTxt;
@@ -39,7 +45,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //getting the better rotation controls with controller and keyboard
+        //getting the rotation controls with controller and keyboard
         if (Input.GetButton("Clockwise") || Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.up * -1 * turnSpeed * Time.deltaTime);
@@ -62,8 +68,37 @@ public class PlayerController : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         rb.AddRelativeForce(Vector3.forward * verticalInput * thrustForce);
 
-        
-       
+        //boosting power!
+        if(Input.GetButton("Boost"))
+        {
+            if (!boostOnCoolDown)
+            {
+                if(boostCharge >= 1)
+                {
+                    isBoosting = true;
+                    thrustForce = 50;
+                }
+                if (boostCharge < 1)
+                {
+                    isBoosting = false;
+                }
+              
+            }
+          
+        }
+        if(Input.GetButtonUp("Boost"))
+        {
+            isBoosting = false;
+        }
+        if(boostCharge < 1)
+        {
+            isBoosting = false;
+        }
+
+        if(!isBoosting)
+        {
+            thrustForce = 30;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

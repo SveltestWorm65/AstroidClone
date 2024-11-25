@@ -26,6 +26,8 @@ public class SmallEnemy : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         player = GameObject.Find("Player");
+
+        //getting the objects components
         enemyCollider = GetComponent<BoxCollider>();
         enemyRb = GetComponent<Rigidbody>();
 
@@ -37,14 +39,16 @@ public class SmallEnemy : MonoBehaviour
         Vector3 lookDirection = (player.transform.position - transform.position).normalized;
 
         enemyRb.AddForce(lookDirection * speed);
-
+        enemyRb.AddTorque(lookDirection * speed);
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        //killing the enemy with projectile
         if (other.gameObject.CompareTag("Projectile"))
         {
+            gm.AddScore(2);
             Destroy(gameObject);
           
         }

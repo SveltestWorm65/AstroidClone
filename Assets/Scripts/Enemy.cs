@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("Bools")]
-   
+    
 
     [Header("Floats")]
     public float speed;
@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
     [Header("GameObjects")]
     public GameObject player;
     public GameObject enemyBabies;
+    public GameObject spawnPoint1;
+    public GameObject spawnPoint2;
 
     [Header("Scripts")]
     public PlayerController playerController;
@@ -30,6 +32,10 @@ public class Enemy : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         player = GameObject.Find("Player");
+
+        //getting SpawnPoints for spawning the smaller enemies
+        spawnPoint1 = GameObject.Find("EnemySpawnPoint1");
+        spawnPoint2 = GameObject.Find("EnemySpawnPoint2");
 
         //getting the enemie's components
         enemyCollider = GetComponent<BoxCollider>();
@@ -54,16 +60,17 @@ public class Enemy : MonoBehaviour
         //kill the enemy and spawn babies
         if(other.gameObject.CompareTag("Projectile"))
         {
+            StartCoroutine(SpawnBabies());
+            gm.AddScore(1);
             Destroy(gameObject);
-            SpawnBabies();
+           
         }
     }
 
     IEnumerator SpawnBabies()
     {
-        yield return new WaitForSeconds(0);
-        Instantiate(enemyBabies, transform.position, transform.rotation);
-        Instantiate(enemyBabies, transform.position, transform.rotation);
+        Instantiate(enemyBabies, spawnPoint1.transform.position, spawnPoint1.transform.rotation);
+        Instantiate(enemyBabies, spawnPoint2.transform.position, spawnPoint2.transform.rotation);
         yield return new WaitForSeconds(0);
     }
 
