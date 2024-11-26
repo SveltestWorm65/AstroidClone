@@ -15,17 +15,21 @@ public class PlayerController : MonoBehaviour
 
     [Header("Components")]
     public Rigidbody rb;
-    public ParticleSystem smoke;
+    public ParticleSystem ps;
+    public AudioSource playerAudio;
 
     [Header("Speed")]
     public float thrustForce;
     public float boostCharge;
 
+    [Header("Audio")]
+    public AudioClip laser;
 
     [Header("GameObjects")]
     public GameObject playerProjectilePrefab;
     public GameObject projectileSpawner;
     public GameObject levelControl;
+    public GameManager gm;
     
   
     [Header("Bools")]
@@ -36,10 +40,16 @@ public class PlayerController : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI deathTxt;
     public Button Restart;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ps = GameObject.Find("Particle System").GetComponent<ParticleSystem>();
+        playerAudio = GetComponent<AudioSource>();
+
+
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -60,6 +70,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetButtonDown("Shoot") || Input.GetMouseButtonDown(0))
         {
             Instantiate(playerProjectilePrefab, projectileSpawner.transform.position, projectileSpawner.transform.rotation);
+            playerAudio.PlayOneShot(laser);
         }
     }
     private void FixedUpdate()
@@ -71,6 +82,7 @@ public class PlayerController : MonoBehaviour
         //boosting power!
         if(Input.GetButton("Boost"))
         {
+            Debug.Log("IsBeingPushed");
             if (!boostOnCoolDown)
             {
                 if(boostCharge >= 1)
@@ -95,10 +107,7 @@ public class PlayerController : MonoBehaviour
             isBoosting = false;
         }
 
-        if(!isBoosting)
-        {
-            thrustForce = 30;
-        }
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -109,13 +118,21 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            gameOver = true;
-            rb.constraints = RigidbodyConstraints.FreezePositionX;
-            rb.constraints = RigidbodyConstraints.FreezePositionZ;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-            levelControl.gameObject.SetActive(true);
-            Restart.gameObject.SetActive(true);
-            deathTxt.gameObject.SetActive(true);
+            gm.LooseLife();
+            Destroy(other.gameObject);
+            if(gm.lives <= 0)
+            {
+                gameOver = true;
+               
+                turnSpeed = 0;
+                thrustForce = 0;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+                levelControl.gameObject.SetActive(true);
+                Restart.gameObject.SetActive(true);
+                deathTxt.gameObject.SetActive(true);
+               
+            }
+         
         }
     }
 }

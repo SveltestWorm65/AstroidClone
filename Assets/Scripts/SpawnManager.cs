@@ -18,12 +18,19 @@ public class SpawnManager : MonoBehaviour
     public int enemyCount;
     public int waveNumber = 1;
 
+    [Header("Floats")]
+    public float safetyRadius;
+
+    [Header("GameManager")]
+    public GameManager gm;
+
     [Header("Scripts")]
     public PlayerController playerController;
     void Start()
     {
-        
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+
         SpawnEnemyWave(waveNumber);
 
     }
@@ -55,10 +62,20 @@ public class SpawnManager : MonoBehaviour
         float yPos = Random.Range(-yRange, yRange);
         float zPos = Random.Range(-zRange, zRange);
         Vector3 RandomPosition = new Vector3(xPos, yPos, zPos);
+
+        while ((RandomPosition - playerController.transform.position).magnitude < safetyRadius)
+        {
+            xPos = Random.Range(-xRange, xRange);
+            yPos = Random.Range(-yRange, yRange);
+            zPos = Random.Range(-zRange, zRange);
+            RandomPosition = new Vector3(xPos, yPos, zPos);
+        }
         return RandomPosition;
     }
     public void SpawnPrefab()
     {
         Instantiate(enemyPrefab, RandomPos(), transform.rotation);
     }
+
+    
 }

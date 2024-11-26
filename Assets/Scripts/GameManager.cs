@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("Ints")]
     public int score;
     public int lives;
+    public int maxLives;
     public int waves;
 
     [Header("Scripts")]
@@ -23,14 +24,17 @@ public class GameManager : MonoBehaviour
     {
         //starting everything at default
         score = 0;
-        lives = 0;
+        lives = 3;
         waves = 1;
 
         //getting the gameObjects and components
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
-    
+    void Update()
+    {
+        
+    }
     //updating the score
     void UpdateScore()
     {
@@ -58,10 +62,15 @@ public class GameManager : MonoBehaviour
     {
         liveCounter.text = $"Lives: {lives}";
     }
-    public void AddLives(int AmountToAdd)
+    public void LooseLife()
+    {
+        lives -= 1;
+        UpdateLives();
+    }
+   /* public void AddLives(int AmountToAdd)
     {
         lives += AmountToAdd;
         UpdateLives();
-    }
+    }*/
 
 }

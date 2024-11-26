@@ -69,7 +69,6 @@ public class Enemy : MonoBehaviour
 
     IEnumerator SpawnBabies()
     {
-        Instantiate(enemyBabies, spawnPoint1.transform.position, spawnPoint1.transform.rotation);
         Instantiate(enemyBabies, spawnPoint2.transform.position, spawnPoint2.transform.rotation);
         yield return new WaitForSeconds(0);
     }
