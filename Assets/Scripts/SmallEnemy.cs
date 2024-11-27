@@ -50,7 +50,16 @@ public class SmallEnemy : MonoBehaviour
         {
             gm.AddScore(2);
             Destroy(gameObject);
-          
+            Destroy(other.gameObject);
+
+        }     
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bumper"))
+        {
+            Destroy(gameObject);
+            gm.AddScore(1);
         }
     }
 }

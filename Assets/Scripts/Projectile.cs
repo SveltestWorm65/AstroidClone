@@ -33,7 +33,6 @@ public class Projectile : MonoBehaviour
              isActive = false;
              Debug.Log("Destroyed");
          }*/
-
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -41,11 +40,6 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (isActive == true )
-        {
-            Destroy(enemy);
-            Destroy(gameObject);
-            isActive = false;
-        }
+      
     }
 }

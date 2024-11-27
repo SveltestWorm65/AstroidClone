@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [Header("GameObjects")]
     public GameObject playerProjectilePrefab;
     public GameObject projectileSpawner;
+    public GameObject Bumper;
     public GameObject levelControl;
     public GameManager gm;
     
@@ -79,43 +80,52 @@ public class PlayerController : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         rb.AddRelativeForce(Vector3.forward * verticalInput * thrustForce);
 
-        //boosting power!
-        if(Input.GetButton("Boost"))
+        //particle system
+        if(verticalInput >= 0.1)
         {
-            Debug.Log("IsBeingPushed");
-            if (!boostOnCoolDown)
-            {
-                if(boostCharge >= 1)
-                {
-                    isBoosting = true;
-                    thrustForce = 50;
-                }
-                if (boostCharge < 1)
-                {
-                    isBoosting = false;
-                }
-              
-            }
-          
+            ps.Play();
         }
-        if(Input.GetButtonUp("Boost"))
+        else if(verticalInput <= 0)
         {
-            isBoosting = false;
-        }
-        if(boostCharge < 1)
-        {
-            isBoosting = false;
+            ps.Stop();
         }
 
-        
+        //boosting power!
+        if (Input.GetButtonDown("Boost"))
+        {
+            if (thrustForce >= 0.5)
+            {
+                StartCoroutine(Boosting());
+            }  
+        }
+    }
+    IEnumerator Boosting()
+    {
+        if (rb.velocity.magnitude >= 0.75f)
+        {
+            rb.AddRelativeForce(Vector3.forward * verticalInput * boostCharge * 1.25f, ForceMode.Impulse);
+            isBoosting = true;
+            gm.Invince = true;
+            Bumper.gameObject.SetActive(true);
+        }
+        yield return new WaitForSeconds(1);
+        Bumper.gameObject.SetActive(false);
+        gm.Invince = false;
+        isBoosting = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-      
+        if(Bumper.CompareTag("Enemy") && gm.Invince == true)
+        {
+            Destroy(collision.gameObject);
+            gm.Invince = false;
+            Bumper.SetActive(false);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.CompareTag("Enemy"))
         {
             gm.LooseLife();
@@ -132,7 +142,6 @@ public class PlayerController : MonoBehaviour
                 deathTxt.gameObject.SetActive(true);
                
             }
-         
         }
     }
 }

@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour
     public int maxLives;
     public int waves;
 
+    public bool Invince;
+
     [Header("Scripts")]
     public PlayerController playerController;
+    public SpawnManager sm;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,7 @@ public class GameManager : MonoBehaviour
 
         //getting the gameObjects and components
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        sm = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
     }
 
     void Update()
@@ -51,10 +55,15 @@ public class GameManager : MonoBehaviour
     {
         waveCounter.text = $"Score: {waves}";
     }
-    public void AddWave(int amountToAdd)
+    public void AddWave(int WaveToAdd)
     {
-        waves += amountToAdd;
-        UpdateWave();
+        if(sm.enemyCount == 0)
+        {
+            waves += WaveToAdd;
+            UpdateWave();
+        }
+       
+        
     }
 
     //Updating the lives
@@ -64,8 +73,13 @@ public class GameManager : MonoBehaviour
     }
     public void LooseLife()
     {
-        lives -= 1;
-        UpdateLives();
+        if (Invince == false)
+        {
+            lives -= 1;
+            UpdateLives();
+        }
+
+        
     }
    /* public void AddLives(int AmountToAdd)
     {

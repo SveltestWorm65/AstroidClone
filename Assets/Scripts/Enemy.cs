@@ -60,26 +60,26 @@ public class Enemy : MonoBehaviour
         //kill the enemy and spawn babies
         if(other.gameObject.CompareTag("Projectile"))
         {
-            StartCoroutine(SpawnBabies());
-            gm.AddScore(1);
+            Destroy(other.gameObject);
+            SpawnBabies();
             Destroy(gameObject);
-           
+            gm.AddScore(1);
+        }
+        
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Bumper"))
+        {
+            Destroy(gameObject);
+            SpawnBabies();
+            gm.AddScore(1);
         }
     }
 
-    IEnumerator SpawnBabies()
+    public void SpawnBabies()
     {
         Instantiate(enemyBabies, spawnPoint2.transform.position, spawnPoint2.transform.rotation);
-        yield return new WaitForSeconds(0);
+   
     }
-
-
-
-
-
-
-
-
-
-
 }
