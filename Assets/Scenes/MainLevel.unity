@@ -1237,6 +1237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 304971966}
   - component: {fileID: 304971967}
+  - component: {fileID: 304971968}
   m_Layer: 0
   m_Name: Bumper
   m_TagString: Bumper
@@ -1272,6 +1273,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.956779, y: 4.4086103, z: 1.2379229}
   m_Center: {x: 0.10072723, y: 0.7550746, z: -0.118961334}
+--- !u!114 &304971968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304971965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f924428ce9cafa34ba261f826dfedabc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMax: 0
+  xMin: 0
+  zMax: 0
+  zMin: 0
 --- !u!1 &324893986
 GameObject:
   m_ObjectHideFlags: 0
@@ -7811,6 +7828,7 @@ MonoBehaviour:
   thrustForce: 30
   boostCharge: 30
   laser: {fileID: 8300000, guid: 9b060dbbcb863214b9f85c898b2ff3aa, type: 3}
+  splat: {fileID: 8300000, guid: 9cd53ab641397ae419e8f61b5c4ec98f, type: 3}
   playerProjectilePrefab: {fileID: 6618374135189070977, guid: 9899ce2243827ec428a489cafe4c8160, type: 3}
   projectileSpawner: {fileID: 1223389852}
   Bumper: {fileID: 304971965}
@@ -9465,6 +9483,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2361283325352278563, guid: 580435a6e3017ca4382dfc0c13df7912, type: 3}
+      propertyPath: gm
+      value: 
+      objectReference: {fileID: 748040971}
     - target: {fileID: 2361283325352278563, guid: 580435a6e3017ca4382dfc0c13df7912, type: 3}
       propertyPath: sm
       value: 

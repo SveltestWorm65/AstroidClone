@@ -48,10 +48,10 @@ public class SmallEnemy : MonoBehaviour
         //killing the enemy with projectile
         if (other.gameObject.CompareTag("Projectile"))
         {
-            gm.AddScore(2);
+           
             Destroy(gameObject);
             Destroy(other.gameObject);
-
+            gm.AddScore(2);
         }     
     }
     public void OnCollisionEnter(Collision collision)

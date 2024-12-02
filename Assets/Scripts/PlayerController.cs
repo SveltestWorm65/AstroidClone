@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip laser;
+    public AudioClip splat;
 
     [Header("GameObjects")]
     public GameObject playerProjectilePrefab;
@@ -116,16 +117,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        //running enemies over with the bumper and preventing loosing lives
         if(Bumper.CompareTag("Enemy") && gm.Invince == true)
         {
             Destroy(collision.gameObject);
+            playerAudio.PlayOneShot(splat);
             gm.Invince = false;
             Bumper.SetActive(false);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-
+        //if lives reaches 0 game over happens
         if (other.gameObject.CompareTag("Enemy"))
         {
             gm.LooseLife();
